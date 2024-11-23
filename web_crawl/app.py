@@ -64,6 +64,8 @@ def append_to_csv(input_url, features_url, pricing_url, status, filename):
     """Append crawl data to the specified CSV file."""
     try:
         if not os.path.exists(filename):
+            # Create directory if it does not exist
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
             pd.DataFrame(columns=["Input URL", "Features URL", "Pricing URL", "Status"]).to_csv(filename, index=False)
         
         df = pd.read_csv(filename)
@@ -78,7 +80,7 @@ def append_to_csv(input_url, features_url, pricing_url, status, filename):
 st.title("Automated Features and Pricing Crawler")
 
 input_url = st.text_input("Enter the website URL:")
-output_file = st.text_input("Enter the output file name (e.g., data.csv):", value="features_pricing_crawler_data.csv")
+output_file = st.text_input("Enter the output file name (e.g., data/features_pricing_crawler_data.csv):", value="data/features_pricing_crawler_data.csv")
 if st.button("Start Crawling"):
     if input_url and output_file:
         if validate_url(input_url):
